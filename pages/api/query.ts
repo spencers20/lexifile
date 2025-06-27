@@ -1,7 +1,4 @@
-// pages/api/query.js
 
-// import { callflowise } from "@/lib/callFlowise";
-import { getNamespace } from "./namespace";
 import { NextApiRequest, NextApiResponse } from "next";
 import 'dotenv/config'
 import { parse } from "cookie";
