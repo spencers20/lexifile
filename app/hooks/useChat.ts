@@ -48,7 +48,7 @@ export function useChat() {
     
          
          const safeHTML =DOMPurify.sanitize(formatted)
-        //  c onst safeHTML="im prettu sure you do know"
+        //  const safeHTML="Get started creating, deploying, and managing applications—across multiple clouds, on-premises, and at the edge—with scalable and cost-efficient Azure services. Get started creating, deploying, and managing applications—across multiple clouds, on-premises, and at the edge—with scalable and cost-efficient Azure services.Get started creating, deploying, and managing applications—across multiple clouds, on-premises, and at the edge—with scalable and cost-efficient Azure services."
 
       const botMessage :Message = {
         id: Date.now() + 1,

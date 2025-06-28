@@ -227,53 +227,56 @@ export default function ChatPage() {
     )
   }
 
-  // Chat state - split layout
-  return (
-   
-   
+ // Chat state - split layout
 
-      <div className="flex flex-col md:flex-row h-screen">
-      {/* Mobile Header - Only visible on mobile */}
-      <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 p-4">
+  return (
+    <div className="flex flex-col md:flex-row h-screen">
+      {/* Mobile Header - Sticky at top on mobile */}
+      <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 p-3 sm:p-4 sticky top-0 z-20">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-              <Bot className="h-4 w-4 text-white" />
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+              <Bot className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900 text-sm">Lexi</h2>
+              <h2 className="font-semibold text-gray-900 text-xs sm:text-sm">Lexi</h2>
               <p className="text-xs text-gray-500">Your document assistant</p>
             </div>
           </div>
           {document && (
-            <Button variant="ghost" size="sm" onClick={() => setShowDocumentPanel(!showDocumentPanel)} className="p-2">
-              <Menu className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowDocumentPanel(!showDocumentPanel)}
+              className="p-1.5 sm:p-2"
+            >
+              <Menu className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
           )}
         </div>
       </div>
-
+  
       {/* Document Panel - Left Side */}
       <div
         className={`
-        ${showDocumentPanel ? "block" : "hidden"} md:block
-        w-full md:w-80 
-        bg-white/90 backdrop-blur-sm 
-        border-b md:border-b-0 md:border-r border-gray-200 
-        flex flex-col
-        absolute md:relative
-        top-16 md:top-0
-        left-0 right-0
-        z-10 md:z-auto
-        max-h-[calc(100vh-4rem)] md:max-h-none
-      `}
+      ${showDocumentPanel ? "block" : "hidden"} md:block
+      w-full md:w-80 
+      bg-white/90 backdrop-blur-sm 
+      border-b md:border-b-0 md:border-r border-gray-200 
+      flex flex-col
+      fixed md:relative
+      top-14 sm:top-16 md:top-0
+      left-0 right-0
+      z-10 md:z-auto
+      max-h-[calc(100vh-3.5rem)] sm:max-h-[calc(100vh-4rem)] md:max-h-none
+    `}
       >
         <div className="p-3 md:p-4 border-b border-gray-200">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <h3 className="font-semibold text-gray-800 text-sm md:text-base">Document</h3>
             <div className="flex space-x-1 md:space-x-2">
               <Button variant="ghost" size="sm" className="md:hidden p-1" onClick={() => setShowDocumentPanel(false)}>
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
               <Button variant="ghost" size="sm" className="hidden md:inline-flex p-1 md:p-2">
                 <Minimize2 className="h-3 w-3 md:h-4 md:w-4" />
@@ -283,7 +286,7 @@ export default function ChatPage() {
               </Button>
             </div>
           </div>
-
+  
           {document && (
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 md:p-4">
               <div className="flex items-center space-x-2 md:space-x-3">
@@ -298,21 +301,21 @@ export default function ChatPage() {
             </div>
           )}
         </div>
-
+  
         {/* Document Preview Area */}
         <div className="flex-1 p-3 md:p-4">
           <div className="h-32 md:h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center">
             <div className="text-center text-gray-500">
-              <FileText className="h-8 w-8 md:h-12 md:w-12 mx-auto mb-2 md:mb-3 text-gray-400" />
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 md:h-12 md:w-12 mx-auto mb-2 md:mb-3 text-gray-400" />
               <p className="text-xs md:text-sm">Document preview</p>
               <p className="text-xs text-gray-400">Coming soon</p>
             </div>
           </div>
         </div>
       </div>
-
+  
       {/* Chat Panel - Right Side */}
-      <div className="flex-1 flex flex-col min-h-0">
+      <div className="flex-1 flex flex-col min-h-0 relative">
         {/* Chat Header - Hidden on mobile (shown in mobile header instead) */}
         <div className="hidden md:block bg-white/90 backdrop-blur-sm border-b border-gray-200 p-4">
           <div className="flex items-center space-x-3">
@@ -325,19 +328,30 @@ export default function ChatPage() {
             </div>
           </div>
         </div>
-
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-3 md:p-6 space-y-4 md:space-y-6" ref={scrollRef}>
+  
+        {/* Messages Area - Scrollable content */}
+        <div
+          className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 pb-20 md:pb-6  h-[calc(100vh-7rem)] md:h-auto"
+          ref={scrollRef}
+            // style={{
+            //   height: "calc(100vh - 7rem)", // Mobile: account for header + input
+            //   "@media (min-width: 768px)": {
+            //     height: "auto",
+            //   },
+            // }}
+        >
           {messages.length === 0 && (
-            <div className="text-center py-8 md:py-12">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                <Bot className="h-6 w-6 md:h-8 md:w-8 text-white" />
+            <div className="text-center py-6 sm:py-8 md:py-12">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                <Bot className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
               </div>
-              <p className="text-lg md:text-xl font-medium mb-2 text-gray-700">Great! I've analyzed your document.</p>
-              <p className="text-gray-500 text-base md:text-lg">What would you like to know about it?</p>
+              <p className="text-base sm:text-lg md:text-xl font-medium mb-2 text-gray-700">
+                Great! I've analyzed your document.
+              </p>
+              <p className="text-gray-500 text-sm sm:text-base md:text-lg">What would you like to know about it?</p>
             </div>
           )}
-
+  
           {messages.map((message) => (
             <div
               key={message.id}
@@ -346,18 +360,18 @@ export default function ChatPage() {
               }`}
             >
               <div
-                className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                   message.role === "user" ? "bg-blue-600" : "bg-gradient-to-r from-purple-500 to-blue-500"
                 }`}
               >
                 {message.role === "user" ? (
-                  <User className="h-4 w-4 md:h-5 md:w-5 text-white" />
+                  <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
                 ) : (
-                  <Bot className="h-4 w-4 md:h-5 md:w-5 text-white" />
+                  <Bot className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
                 )}
               </div>
               <div
-                className={`max-w-[85%] md:max-w-[75%] p-3 md:p-4 rounded-2xl text-sm md:text-base ${
+                className={`max-w-[85%] md:max-w-[75%] p-2.5 sm:p-3 md:p-4 rounded-2xl text-xs sm:text-sm md:text-base ${
                   message.role === "user"
                     ? "bg-blue-600 text-white rounded-tr-md"
                     : "bg-white text-gray-900 rounded-tl-md shadow-sm border border-gray-100"
@@ -371,55 +385,55 @@ export default function ChatPage() {
               </div>
             </div>
           ))}
-
+  
           {isLoading && (
             <div className="flex items-start space-x-2 md:space-x-4">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
-                <Bot className="h-4 w-4 md:h-5 md:w-5 text-white" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                <Bot className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
               </div>
-              <div className="bg-white text-gray-900 p-3 md:p-4 rounded-2xl rounded-tl-md shadow-sm border border-gray-100">
-                <div className="flex items-center space-x-3">
+              <div className="bg-white text-gray-900 p-2.5 sm:p-3 md:p-4 rounded-2xl rounded-tl-md shadow-sm border border-gray-100">
+                <div className="flex items-center space-x-2 sm:space-x-3">
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"></div>
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0.20s" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0.20s" }}
                     ></div>
                   </div>
-                  <span className="text-gray-600 text-sm md:text-base">Thinking...</span>
+                  <span className="text-gray-600 text-xs sm:text-sm md:text-base">Thinking...</span>
                 </div>
               </div>
             </div>
           )}
         </div>
-
-        {/* Input Area */}
-        <div className="bg-white/90 backdrop-blur-sm border-t border-gray-200 p-3 md:p-6">
+  
+        {/* Input Area - Sticky at bottom on mobile */}
+        <div className="bg-white/95 backdrop-blur-sm border-t border-gray-200 p-3 sm:p-4 md:p-6 sticky bottom-0 z-20 md:relative md:z-auto">
           <form onSubmit={handleSubmit} className="flex space-x-2 md:space-x-4">
             <div className="flex-1 relative">
               <Input
                 value={input}
                 onChange={handleInputChange}
                 placeholder="Ask me anything about your document..."
-                className="h-10 md:h-12 rounded-xl border-gray-200 focus:border-blue-400 focus:ring-blue-400 text-sm md:text-base"
+                className="h-9 sm:h-10 md:h-12 rounded-xl border-gray-200 focus:border-blue-400 focus:ring-blue-400 text-xs sm:text-sm md:text-base px-3 sm:px-4"
                 disabled={isLoading}
               />
             </div>
             <Button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="h-10 md:h-12 px-4 md:px-8 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+              className="h-9 sm:h-10 md:h-12 px-3 sm:px-4 md:px-8 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
             >
-              <Send className="h-4 w-4 md:h-5 md:w-5" />
+              <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5" />
             </Button>
           </form>
         </div>
       </div>
     </div>
-   
   )
 }
+
