@@ -1,6 +1,6 @@
 {
-  "/favicon.ico/route": "/favicon.ico",
   "/_not-found/page": "/_not-found",
-  "/chat/page": "/chat",
-  "/page": "/"
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/chat/page": "/chat"
 }

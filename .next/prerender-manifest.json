@@ -30,30 +30,6 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/",
-      "dataRoute": "/index.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
     "/chat": {
       "experimentalBypassFor": [
         {
@@ -77,13 +53,37 @@
         "x-next-revalidated-tags",
         "x-next-revalidate-tag-token"
       ]
+    },
+    "/": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/",
+      "dataRoute": "/index.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
     }
   },
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "b7ffdedd6cba4cd9763d7f3b244297d4",
-    "previewModeSigningKey": "7c64b9b2527b3136f7247451f4d4efbe32e0ca8ee3b7c09d1c7556ee3ef76e59",
-    "previewModeEncryptionKey": "df78b0a0d5d2f58044681e0bd5bf28ae2998a9566d83fb736661463bb0cd932b"
+    "previewModeId": "7bf870640c51628646591a95b8144f59",
+    "previewModeSigningKey": "b33d465fca705571d3b31e8a3577c501cc4364761fc4c45e02cb59a7810e7e61",
+    "previewModeEncryptionKey": "d9536076b72c1fbc6420ba6963a9c353a921638b964b836181c65dbf39f7d950"
   }
 }
