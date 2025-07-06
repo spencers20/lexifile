@@ -445,10 +445,6 @@
     container: card-header / inline-size;
   }
 
-  .visible {
-    visibility: visible;
-  }
-
   .absolute {
     position: absolute;
   }
@@ -483,10 +479,6 @@
 
   .top-14 {
     top: calc(var(--spacing) * 14);
-  }
-
-  .top-16 {
-    top: calc(var(--spacing) * 16);
   }
 
   .-right-1 {
@@ -716,10 +708,6 @@
     max-height: calc(100vh - 3.5rem);
   }
 
-  .max-h-\[calc\(100vh-4rem\)\] {
-    max-height: calc(100vh - 4rem);
-  }
-
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
   }
@@ -908,12 +896,6 @@
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));
     margin-block-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)));
-  }
-
-  :where(.space-y-4 > :not(:last-child)) {
-    --tw-space-y-reverse: 0;
-    margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
-    margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
   }
 
   :where(.space-y-8 > :not(:last-child)) {
@@ -1338,10 +1320,6 @@
 
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
-  }
-
-  .py-8 {
-    padding-block: calc(var(--spacing) * 8);
   }
 
   .py-12 {
@@ -1960,13 +1938,6 @@
       --tw-space-x-reverse: 0;
       margin-inline-start: calc(calc(var(--spacing) * 3) * var(--tw-space-x-reverse));
       margin-inline-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-x-reverse)));
-    }
-  }
-
-  @media (width >= 40rem) {
-    .sm\:bg-gradient-to-r {
-      --tw-gradient-position: to right in oklab;
-      background-image: linear-gradient(var(--tw-gradient-stops));
     }
   }
 
