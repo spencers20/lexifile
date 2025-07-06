@@ -4,6 +4,12 @@ import 'dotenv/config'
 import { parse } from "cookie";
 // lib/callFlowise.js
 
+{
+  "question":"yes the milestones",
+  "thread_id":"f079f854-cd24-43e6-8573-5ebe988bd717",
+  "namespace":"lexi-04de153a"
+}
+
 type flowisepayload={
     question:string,
     namespace:string
@@ -41,8 +47,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
   try {
     const cookies=parse(req.headers.cookie||"")
-    // const namespace = cookies.namespace
-    const namespace="lexi-78d9c735"
+    const namespace = cookies.namespace
+    
     if (!namespace) {
       return res.status(500).json({
         error: "Namespace not available. Please upload the document again to proceed.",
