@@ -6,13 +6,12 @@ import { parse } from "cookie";
 
 type flowisepayload={
     question:string,
-    overrideConfig: {
-        pineconeNamespace: string,
-      },
+    namespace:string
     
 }
 type  chatflowisepayload={
     question:string,
+    namespace:string,
     chatId:string
 }
 export async function callflowise(data:flowisepayload |chatflowisepayload ) {
@@ -20,7 +19,6 @@ export async function callflowise(data:flowisepayload |chatflowisepayload ) {
       const response = await fetch(process.env.API_KEY as string, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.AUTH_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -60,9 +58,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     if (!chatId) {
       const flowisepayload :flowisepayload = {
         question: query,
-        overrideConfig: {
-          pineconeNamespace: namespace,
-        },
+        namespace:namespace
       };
       const results = await callflowise(flowisepayload);
       if (results) {
@@ -73,6 +69,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     } else {
       const chatflowisepayload : chatflowisepayload = {
         question: query,
+        namespace:namespace,
         chatId: chatId,
       };
       const results = await callflowise(chatflowisepayload);
