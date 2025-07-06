@@ -4,11 +4,11 @@ import 'dotenv/config'
 import { parse } from "cookie";
 // lib/callFlowise.js
 
-{
-  "question":"yes the milestones",
-  "thread_id":"f079f854-cd24-43e6-8573-5ebe988bd717",
-  "namespace":"lexi-04de153a"
-}
+// {
+//   "question":"yes the milestones",
+//   "thread_id":"f079f854-cd24-43e6-8573-5ebe988bd717",
+//   "namespace":"lexi-04de153a"
+// }
 
 type flowisepayload={
     question:string,
