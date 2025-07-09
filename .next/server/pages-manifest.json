@@ -1,1 +1,5 @@
-{}
+{
+  "/api/delete": "pages/api/delete.js",
+  "/api/query": "pages/api/query.js",
+  "/api/upserting": "pages/api/upserting.js"
+}

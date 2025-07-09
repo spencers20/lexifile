@@ -28,6 +28,20 @@ export default function ChatPage() {
   }
   }, [messages]);
 
+  useEffect(()=>{
+    window.addEventListener("pagehide",()=>{navigator.sendBeacon('/api/delete')})
+    // window.addEventListener("visibilitychange",()=>{
+    //   if(document.visibilityState==="hidden"){
+    //     navigator.sendBeacon('/api/delete')
+    //   }
+
+    // })
+
+    // return ()=>{
+    //   navigator.sendBeacon('/api/delete')
+    // }
+  })
+
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("sending file....")

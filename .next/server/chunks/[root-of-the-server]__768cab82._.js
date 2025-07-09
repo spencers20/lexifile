@@ -62,10 +62,11 @@ async function handler(req, res) {
     }
     try {
         const cookies = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__$28$cookie$2c$__cjs$29$__["parse"])(req.headers.cookie || "");
-        // const namespace = cookies.namespace
-        const namespace = "lexi-78d9c735";
-        if ("TURBOPACK compile-time falsy", 0) {
-            "TURBOPACK unreachable";
+        const namespace = cookies.namespace;
+        if (!namespace) {
+            return res.status(500).json({
+                error: "Namespace not available. Please upload the document again to proceed."
+            });
         }
         console.log("flowise entered...");
         const body = req.body;
@@ -88,7 +89,7 @@ async function handler(req, res) {
             const chatflowisepayload = {
                 question: query,
                 namespace: namespace,
-                chatId: chatId
+                thread_id: chatId
             };
             const results = await callflowise(chatflowisepayload);
             return res.status(200).json({
