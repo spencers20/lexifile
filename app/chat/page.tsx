@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Upload, FileText, Bot, Sparkles, User, Send, X, Minimize2,Menu,ChevronLeft} from "lucide-react"
 import { useChat } from "../hooks/useChat"
 import Header from "../component/header"
+import { VisualsModal } from "../component/visual-modal"
 
 
 export default function ChatPage() {
@@ -397,6 +398,12 @@ export default function ChatPage() {
                   <div dangerouslySetInnerHTML={{ __html: message.content }} />
                 )}
               </div>
+              {/* Conditionally render image badge and modal */}
+          {message.visuals && message.visuals.length > 0 && (
+             <div className="mt-2">
+              <VisualsModal visuals={message.visuals} />
+           </div>
+        )}
             </div>
           ))}
   

@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import  {parse} from 'csv-parse'
 import mammoth from "mammoth"
 import pdfParse from 'pdf-parse'
-import fs from 'fs'
+import fs, { access } from 'fs' 
 import {RecursiveCharacterTextSplitter} from "langchain/text_splitter"
 import {Document} from 'langchain/document'
 import {CohereClient} from 'cohere-ai'
@@ -11,6 +11,13 @@ import 'dotenv/config'
 // import { embedJobs } from "cohere-ai/api";
 import { Pinecone } from '@pinecone-database/pinecone';
 import {serialize} from 'cookie'
+import {put} from "@vercel/blob"
+import * as buffs from 'fs/promises' 
+// import {BlobServiceClient} from "@azure/storage-blob"
+
+// const containername:string||undefined=
+// const blobserviceclient=BlobServiceClient.fromConnectionString(process.env.AZURE_CONNECTION_STRING!)
+// const containerclient=blobserviceclient.getContainerClient(process.env.CONTAINER_NAME!)
 
 const pc = new Pinecone({
   apiKey : process.env.PINECONE_API as string
@@ -176,6 +183,35 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
             if (!ext) {
                 throw new Error("File extension is missing or invalid.");
               }
+            if (ext=='csv'){
+                try{
+                    console.log("file is a csv")
+                    const filePath=file.filepath
+                    const buffer=await buffs.readFile(filePath)
+                    const blob=await put(filename,buffer,{
+                        access:'public',
+                        addRandomSuffix:true,
+                        token:process.env.BLOB_R_W_TOKEN_READ_WRITE_TOKEN
+                    })
+                    
+                    const file_path=blob.url
+                    res.setHeader('Set-Cookie',
+                        serialize("file_path",file_path,{
+                            path:'/',
+                            httpOnly:true,
+                            sameSite:'lax',
+                            maxAge:60*5
+                        })
+                    )
+                    console.log('file_path', file_path)
+                    return res.status(200).json({"success":"success in getting the file_path for csv"})
+                }catch(e){
+                    console.error("error in getting the filepath for csv",e)
+                    throw new Error("error in getting the filepath for csv")
+                }
+
+
+            }
             const {text}= await getdata(file,ext)
             const {allchunks}=await chunkdocs(text,filename)
             const {embeddings}= await generateembeddings(allchunks)
@@ -200,12 +236,13 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
                     maxAge: 60 * 5,
                 })
             )
-            res.status(200).json({success:`success in upserting doc ${upserteddocs}`})
+            return res.status(200).json({success:`success in upserting doc ${upserteddocs}`})
             
               
 
         }catch(e){
          console.log("error in parsing / upserting data",e)
+         return res.status(500).json({"error":"error in upserting data "})
     
         }
 

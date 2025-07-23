@@ -2,6 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import 'dotenv/config'
 import { parse } from "cookie";
+import fs from 'fs'
 // lib/callFlowise.js
 
 // {
@@ -10,17 +11,21 @@ import { parse } from "cookie";
 //   "namespace":"lexi-04de153a"
 // }
 
-type flowisepayload={
+type lexipayload={
     question:string,
-    namespace:string
+    namespace?:string,
+    file_path?:string
     
 }
-type  chatflowisepayload={
+type  chatlexipayload={
     question:string,
-    namespace:string,
+    namespace?:string,
+    file_path?:string,
     thread_id:string
 }
-export async function callflowise(data:flowisepayload |chatflowisepayload ) {
+
+// type 
+export async function calllexi(data:lexipayload |chatlexipayload ) {
     try {
       const response = await fetch(process.env.LEXI_URL as string, {
         method: "POST",
@@ -47,11 +52,18 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
   try {
     const cookies=parse(req.headers.cookie||"")
-    const namespace = cookies.namespace
+    const namespace = cookies.namespace?cookies.namespace:""
+    const file_path=cookies.file_path?cookies.file_path:""
+    // let file_path;
+    // if (file_path &&fs.existsSync(cookie_file_path)){
+    //   // console.log('file_path...',file_path)
+    //   file_path=cookie_file_path
+    // }
     
-    if (!namespace) {
+    if (namespace=="" && file_path=="") {
+      
       return res.status(500).json({
-        error: "Namespace not available. Please upload the document again to proceed.",
+        error: "Namespace / file_path not available. Please upload the document again to proceed.",
       });
     }
 
@@ -63,24 +75,27 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     let chatId = ""; // This can be enhanced later with session state or DB
 
     if (!chatId) {
-      const flowisepayload :flowisepayload = {
+      const lexipayload :lexipayload = {
         question: query,
-        namespace:namespace
+        namespace:namespace,
+        file_path:file_path
+
       };
-      const results = await callflowise(flowisepayload);
+      const results = await calllexi(lexipayload);
       if (results) {
         chatId = results.chatId;
         console.log("results", results.response);
-        return res.status(200).json({ response: results.response });
+        return res.status(200).json({ response: results.response, origin_res:results.text_response, visualizatons:results.visuals });
       }
     } else {
-      const chatflowisepayload : chatflowisepayload = {
+      const chatlexipayload : chatlexipayload = {
         question: query,
         namespace:namespace,
         thread_id: chatId,
       };
-      const results = await callflowise(chatflowisepayload);
-      return res.status(200).json({ response: results.text });
+      const results = await calllexi(chatlexipayload);
+      return res.status(200).json({ response: results.response, origin_res:results.text_response, visualizatons:results.visuals });
+      // return res.status(200).json({ response: results.response });//made change
     }
   } catch (e) {
     console.error("error querying flowise", e);

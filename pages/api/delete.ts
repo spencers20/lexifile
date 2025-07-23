@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { parse } from "cookie";
 import { Pinecone } from "@pinecone-database/pinecone";
 import 'dotenv/config'
+import {del} from '@vercel/blob'
 
 
 const pc=new Pinecone({apiKey:process.env.PINECONE_API as string})
@@ -12,19 +13,32 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
     try{
         const cookies=parse(req.headers.cookie||" ")
         const namespace=cookies.namespace
+        const file_path=cookies.file_path
+        if (file_path && file_path!==""){
+            await del(file_path,{
+                token:process.env.BLOB_R_W_TOKEN_READ_WRITE_TOKEN
+            })
 
-        if(!namespace) return res.status(500).json({
-            error: "Namespace not available. Please upload the document again to proceed.",
+            return res.status(200).json({"success":"file_deleted succfully"})
+            
+        }
+
+        if(!namespace && !file_path ) return res.status(500).json({
+            error: "Namespace and file_path  not available. Please upload the document again to proceed.",
           });
 
-        console.log("namespace available ",namespace)
+        if (namespace && namespace!==""){
 
-        const namespaceexists=await index.describeNamespace(namespace)
-        console.log("namespaceexits..",namespaceexists)
-        if(namespaceexists.name===namespace){
-            await index.namespace(namespace).deleteAll()
-            // console.log("deleteindex,...",deleteindex)
+            console.log("namespace available ",namespace)
+    
+            const namespaceexists=await index.describeNamespace(namespace)
+            console.log("namespaceexits..",namespaceexists)
+            if(namespaceexists.name===namespace){
+                await index.namespace(namespace).deleteAll()
+                // console.log("deleteindex,...",deleteindex)
+            }
         }
+ 
 
 
 

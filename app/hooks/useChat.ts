@@ -3,7 +3,8 @@ import DOMPurify from 'dompurify'
 type Message={
     id:number,
     role:"user"|"bot",
-    content:string
+    content:string,
+    visuals?:any[]
 }
 
 
@@ -36,15 +37,21 @@ export function useChat() {
       const data = await response.json();
       console.log("response..",data)
       const answer=data.response||data.error
+      const allvisuals=data.visualizatons
+      const visuals=allvisuals.map((visual:string)=>`data:image/png;base64,${visual}`)
       
       const formatted = answer
-      .replace(/\\n/g, '\n') // Turn escaped newlines into real ones
-      .replace(/\\"/g, '"')  // Replace escaped quotes
-      .replace(/<think>/g, '<strong>Think:</strong><br />') // Custom tag formatting
+      .replace(/\\n/g, '\n') // Convert escaped newlines to actual ones
+      .replace(/\\"/g, '"')  // Convert escaped quotes to normal quotes
+      .replace(/<think>/g, '<strong>Think:</strong><br />')
       .replace(/<\/think>/g, '')
-      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove markdown bold (**text**) and keep only inner text
-      .replace(/\n\n/g, '</p><p>') // Double newlines → paragraph break
-      .replace(/\n/g, '<br />'); // Single newline → line break
+
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')      // Convert markdown-style bold (**text**) to <strong>text</strong>
+      .replace(/^### (.+?)$/gm, '<h3 class="font-extrabold text-lg mt-4 mb-2">$1</h3>') // Convert markdown headings (### Heading) into <h3>Heading</h3>
+      .replace(/\n{2,}/g, '</p><p>')       // Paragraph break for double newlines
+      
+      .replace(/\n/g, '<br />') // Line break for single newline
+      .replace(/^/, '<p>').concat('</p>');  // Wrap the whole thing in <p> tags
     
          
          const safeHTML =DOMPurify.sanitize(formatted)
@@ -53,7 +60,8 @@ export function useChat() {
       const botMessage :Message = {
         id: Date.now() + 1,
         role: "bot",
-        content: safeHTML
+        content: safeHTML,
+        visuals:visuals
       };
 
       setMessages((prev) => [...prev, botMessage]);
