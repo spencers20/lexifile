@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DOMPurify from 'dompurify'
+import axios from 'axios'
 type Message={
     id:number,
     role:"user"|"bot",
@@ -80,9 +81,9 @@ export function useChat() {
       setIsLoading(false);
     }
   };
-  const handleX=()=>{
-    setMessages([])
-
+  const handleX=async ()=>{
+    await axios.post("/api/delete")
+    // setMessages([])
   }
 
   return {

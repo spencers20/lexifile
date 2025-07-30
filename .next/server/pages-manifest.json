@@ -1,9 +1,5 @@
 {
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/api/delete": "pages/api/delete.js",
   "/api/query": "pages/api/query.js",
-  "/api/upserting": "pages/api/upserting.js",
-  "/_document": "pages/_document.js",
-  "/404": "pages/404.html"
+  "/api/upserting": "pages/api/upserting.js"
 }

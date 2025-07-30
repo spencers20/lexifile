@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
-import { parse } from "cookie";
+import { parse, serialize } from "cookie";
 import { Pinecone } from "@pinecone-database/pinecone";
 import 'dotenv/config'
 import {del} from '@vercel/blob'
@@ -14,7 +14,17 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
         const cookies=parse(req.headers.cookie||" ")
         const namespace=cookies.namespace
         const file_path=cookies.file_path
+
         if (file_path && file_path!==""){
+            res.setHeader('Set-Cookie',
+                serialize('file_path','',{
+                    path:'/',
+                    httpOnly:true,
+                    sameSite:'lax',
+                    maxAge:0
+                })
+            )
+
             await del(file_path,{
                 token:process.env.BLOB_R_W_TOKEN_READ_WRITE_TOKEN
             })
@@ -28,6 +38,14 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
           });
 
         if (namespace && namespace!==""){
+            res.setHeader('Set-Cookie',
+                serialize('namespace','',{
+                    path:'/',
+                    httpOnly:true,
+                    sameSite:'lax',
+                    maxAge:0
+                })
+            )
 
             console.log("namespace available ",namespace)
     
