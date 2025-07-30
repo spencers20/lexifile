@@ -200,7 +200,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
                             path:'/',
                             httpOnly:true,
                             sameSite:'lax',
-                            maxAge:60*5
+                            // maxAge:60*5,
                         })
                     )
                     console.log('file_path', file_path)
@@ -233,7 +233,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
                     path:'/',
                     httpOnly:true,
                     sameSite:'lax',
-                    maxAge: 60 * 5,
+                    // maxAge: 60 * 5,
                 })
             )
             return res.status(200).json({success:`success in upserting doc ${upserteddocs}`})

@@ -108,6 +108,7 @@ export default function ChatPage() {
     setDocument(null)
     setDocumentProcessed(false)
     setIsProcessing(false)
+    handleX()
   }
 
   // Header component

@@ -1,7 +1,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import 'dotenv/config'
-import { parse } from "cookie";
+import { parse, serialize } from "cookie";
 import fs from 'fs'
 // lib/callFlowise.js
 
@@ -46,6 +46,7 @@ export async function calllexi(data:lexipayload |chatlexipayload ) {
   
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
+  console.log("querying microservice..")
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -54,11 +55,13 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     const cookies=parse(req.headers.cookie||"")
     const namespace = cookies.namespace?cookies.namespace:""
     const file_path=cookies.file_path?cookies.file_path:""
-    // let file_path;
+    // let file_path=""
     // if (file_path &&fs.existsSync(cookie_file_path)){
     //   // console.log('file_path...',file_path)
     //   file_path=cookie_file_path
     // }
+    console.log("file_path....",file_path)
+    console.log("namespace..",namespace)
     
     if (namespace=="" && file_path=="") {
       
@@ -72,8 +75,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     const query = body.question;
    
 
-    let chatId = ""; // This can be enhanced later with session state or DB
-
+    let chatId = cookies.chatId?cookies.chatId:""; // This can be enhanced later with session state or DB
+    console.log("chatId..",chatId)
     if (!chatId) {
       const lexipayload :lexipayload = {
         question: query,
@@ -83,7 +86,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
       };
       const results = await calllexi(lexipayload);
       if (results) {
-        chatId = results.chatId;
+        // chatId = results.chatId;
+        res.setHeader('Set-Cookie',
+          serialize("chatId",results.chatId,{
+            path:'/',
+            httpOnly:true,
+            sameSite:'lax',
+            // maxAge:60*5,
+        })
+        )
         console.log("results", results.response);
         return res.status(200).json({ response: results.response, origin_res:results.text_response, visualizatons:results.visuals });
       }

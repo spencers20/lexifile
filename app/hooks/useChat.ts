@@ -26,6 +26,7 @@ export function useChat() {
     setIsLoading(true);
 
     try {
+      console.log("querying microservice...")
       const response = await fetch("/api/query", {
         method: "POST",
         headers: {
@@ -37,8 +38,8 @@ export function useChat() {
       const data = await response.json();
       console.log("response..",data)
       const answer=data.response||data.error
-      const allvisuals=data.visualizatons
-      const visuals=allvisuals.map((visual:string)=>`data:image/png;base64,${visual}`)
+      const allvisuals=data.visualizatons?data.visualizatons:[]
+      const visuals=allvisuals?allvisuals.map((visual:string)=>`data:image/png;base64,${visual}`):[]
       
       const formatted = answer
       .replace(/\\n/g, '\n') // Convert escaped newlines to actual ones
@@ -47,7 +48,14 @@ export function useChat() {
       .replace(/<\/think>/g, '')
 
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')      // Convert markdown-style bold (**text**) to <strong>text</strong>
-      .replace(/^### (.+?)$/gm, '<h3 class="font-extrabold text-lg mt-4 mb-2">$1</h3>') // Convert markdown headings (### Heading) into <h3>Heading</h3>
+      .replace(/^# (.+?)$/gm, '<h1 class="text-2xl font-black mt-8 mb-4">$1</h1>')       // H1
+      .replace(/^## (.+?)$/gm, '<h2 class="text-xl font-extrabold mt-6 mb-3">$1</h2>')    // H2
+      .replace(/^### (.+?)$/gm, '<h3 class="text-lg font-bold mt-5 mb-2">$1</h3>')        // H3
+      .replace(/^#### (.+?)$/gm, '<h4 class="text-base font-semibold mt-4 mb-2">$1</h4>') // H4
+      .replace(/^##### (.+?)$/gm, '<h5 class="text-sm font-medium mt-3 mb-1">$1</h5>')    // H5
+      .replace(/^###### (.+?)$/gm, '<h6 class="text-xs font-normal mt-2 mb-1">$1</h6>')   // H6
+ 
+
       .replace(/\n{2,}/g, '</p><p>')       // Paragraph break for double newlines
       
       .replace(/\n/g, '<br />') // Line break for single newline
@@ -72,12 +80,17 @@ export function useChat() {
       setIsLoading(false);
     }
   };
+  const handleX=()=>{
+    setMessages([])
+
+  }
 
   return {
     messages,
     input,
     handleInputChange,
     handleSubmit,
+    handleX,
     isLoading
   };
 }
