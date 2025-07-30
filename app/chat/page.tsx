@@ -16,7 +16,7 @@ import { VisualsModal } from "../component/visual-modal"
 
 
 export default function ChatPage() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat()
+  const { messages, input, handleInputChange, handleSubmit, isLoading,handleX } = useChat()
   const [document, setDocument] = useState<File | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [documentProcessed, setDocumentProcessed] = useState(false)

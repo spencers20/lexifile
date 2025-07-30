@@ -30,30 +30,6 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/chat": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/chat",
-      "dataRoute": "/chat.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
     "/": {
       "experimentalBypassFor": [
         {
@@ -77,13 +53,37 @@
         "x-next-revalidated-tags",
         "x-next-revalidate-tag-token"
       ]
+    },
+    "/chat": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/chat",
+      "dataRoute": "/chat.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
     }
   },
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "623c91a9babcaf5fa2da90d459f72c15",
-    "previewModeSigningKey": "bdf55e599eb3095cd7ac84d01d7001e4a4fd944067755e523e35f656e3356348",
-    "previewModeEncryptionKey": "8b5c0b25cdc6b104184f3ea6fa5f58446f8b97dacd957a8bd0bf3237a4ef650e"
+    "previewModeId": "c7390fb20c6fd8001289f4e4d82852ba",
+    "previewModeSigningKey": "d42e65597420887fbbe0ed026f1c1e3066d1fa06530b6de7192c552f20871c58",
+    "previewModeEncryptionKey": "9bb055742b3268143175a8aba1dd7beb43dcadd75a1f2370c85d8ba4c723b555"
   }
 }
