@@ -74,6 +74,16 @@ async function handler(req, res) {
         const cookies = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__$28$cookie$2c$__cjs$29$__["parse"])(req.headers.cookie || " ");
         const namespace = cookies.namespace;
         const file_path = cookies.file_path;
+        const chatId = cookies.chatId;
+        if (chatId !== "" || chatId !== null) {
+            console.log();
+            res.setHeader('Set-Cookie', (0, __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__$28$cookie$2c$__cjs$29$__["serialize"])('chatId', '', {
+                path: '/',
+                httpOnly: true,
+                sameSite: 'lax',
+                maxAge: 0
+            }));
+        }
         if (file_path && file_path !== "") {
             res.setHeader('Set-Cookie', (0, __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__$28$cookie$2c$__cjs$29$__["serialize"])('file_path', '', {
                 path: '/',

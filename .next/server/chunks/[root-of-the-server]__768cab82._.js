@@ -39,6 +39,7 @@ var __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__
 ;
 async function calllexi(data) {
     try {
+        console.log('calling lexi...');
         const response = await fetch(process.env.LEXI_URL, {
             method: "POST",
             headers: {
@@ -62,9 +63,11 @@ async function handler(req, res) {
         });
     }
     try {
+        const body = req.body;
+        const query = body.question;
         const cookies = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__$28$cookie$2c$__cjs$29$__["parse"])(req.headers.cookie || "");
         const namespace = cookies.namespace ? cookies.namespace : "";
-        const file_path = cookies.file_path ? cookies.file_path : "";
+        const file_path = cookies.file_path ? cookies.file_path : body.file_path;
         // let file_path=""
         // if (file_path &&fs.existsSync(cookie_file_path)){
         //   // console.log('file_path...',file_path)
@@ -78,8 +81,6 @@ async function handler(req, res) {
             });
         }
         console.log("flowise entered...");
-        const body = req.body;
-        const query = body.question;
         let chatId = cookies.chatId ? cookies.chatId : ""; // This can be enhanced later with session state or DB
         console.log("chatId..", chatId);
         if (!chatId) {
@@ -107,6 +108,7 @@ async function handler(req, res) {
             const chatlexipayload = {
                 question: query,
                 namespace: namespace,
+                file_path: file_path,
                 thread_id: chatId
             };
             const results = await calllexi(chatlexipayload);

@@ -327,6 +327,9 @@ async function handler(req, res) {
                         httpOnly: true,
                         sameSite: 'lax'
                     }));
+                    const cookies = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$cookie__$5b$external$5d$__$28$cookie$2c$__cjs$29$__["parse"])(req.headers.cookie || "");
+                    const chatId = cookies.chatId;
+                    console.log('existing chatId', chatId);
                     console.log('file_path', file_path);
                     return res.status(200).json({
                         "success": "success in getting the file_path for csv"

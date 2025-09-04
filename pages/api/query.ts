@@ -21,12 +21,13 @@ type  chatlexipayload={
     question:string,
     namespace?:string,
     file_path?:string,
-    thread_id:string
+    thread_id?:string
 }
 
 // type 
 export async function calllexi(data:lexipayload |chatlexipayload ) {
     try {
+      console.log('calling lexi...')
       const response = await fetch(process.env.LEXI_URL as string, {
         method: "POST",
         headers: {  
@@ -52,9 +53,11 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   }
 
   try {
+    const body = req.body;
+    const query = body.question;
     const cookies=parse(req.headers.cookie||"")
     const namespace = cookies.namespace?cookies.namespace:""
-    const file_path=cookies.file_path?cookies.file_path:""
+    const file_path=cookies.file_path?cookies.file_path:body.file_path
     // let file_path=""
     // if (file_path &&fs.existsSync(cookie_file_path)){
     //   // console.log('file_path...',file_path)
@@ -71,9 +74,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     }
 
     console.log("flowise entered...");
-    const body = req.body;
-    const query = body.question;
-   
+    
 
     let chatId = cookies.chatId?cookies.chatId:""; // This can be enhanced later with session state or DB
     console.log("chatId..",chatId)
@@ -102,6 +103,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
       const chatlexipayload : chatlexipayload = {
         question: query,
         namespace:namespace,
+        file_path:file_path,
         thread_id: chatId,
       };
       const results = await calllexi(chatlexipayload);

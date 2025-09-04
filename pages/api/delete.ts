@@ -14,8 +14,23 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
         const cookies=parse(req.headers.cookie||" ")
         const namespace=cookies.namespace
         const file_path=cookies.file_path
+        const chatId=cookies.chatId
+
+        if(chatId!==""||chatId!==null){
+            console.log()
+            res.setHeader('Set-Cookie',
+                serialize('chatId','',{
+                    path:'/',
+                    httpOnly:true,
+                    sameSite:'lax',
+                    maxAge:0
+                })
+
+            )
+        }
 
         if (file_path && file_path!==""){
+            
             res.setHeader('Set-Cookie',
                 serialize('file_path','',{
                     path:'/',

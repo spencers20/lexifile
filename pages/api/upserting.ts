@@ -10,9 +10,10 @@ import {CohereClient} from 'cohere-ai'
 import 'dotenv/config'
 // import { embedJobs } from "cohere-ai/api";
 import { Pinecone } from '@pinecone-database/pinecone';
-import {serialize} from 'cookie'
+import {parse as cookieparse,serialize} from 'cookie'
 import {put} from "@vercel/blob"
 import * as buffs from 'fs/promises' 
+import {cookies} from 'next/headers'
 // import {BlobServiceClient} from "@azure/storage-blob"
 
 // const containername:string||undefined=
@@ -203,6 +204,9 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
                             // maxAge:60*5,
                         })
                     )
+                    const cookies=cookieparse(req.headers.cookie||"")
+                    const chatId=cookies.chatId
+                    console.log('existing chatId',chatId)
                     console.log('file_path', file_path)
                     return res.status(200).json({"success":"success in getting the file_path for csv"})
                 }catch(e){
